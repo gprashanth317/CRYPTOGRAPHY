@@ -1,0 +1,21 @@
+import random
+import string
+
+# Input plaintext
+plaintext = input("Enter the plaintext message: ").lower()
+plaintext = ''.join(filter(str.isalpha, plaintext))  # remove non-letter characters
+
+# Generate a random key stream of same length as plaintext
+key_stream = [random.randint(0, 25) for _ in range(len(plaintext))]
+
+# Encrypt plaintext
+ciphertext = ""
+for i, char in enumerate(plaintext):
+    shift = key_stream[i]
+    shifted = (ord(char) - ord('a') + shift) % 26
+    ciphertext += chr(shifted + ord('a'))
+
+# Output results
+print("\nPlaintext       :", plaintext)
+print("Key stream      :", ' '.join(map(str, key_stream)))
+print("Encrypted text  :", ciphertext)
