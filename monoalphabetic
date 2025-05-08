@@ -1,0 +1,21 @@
+import string
+
+print("Monoalphabetic Substitution Cipher")
+
+# Define the standard alphabet and a cipher alphabet (must be a permutation of 26 letters)
+plaintext_alphabet = string.ascii_lowercase
+ciphertext_alphabet = "QWERTYUIOPASDFGHJKLZXCVBNM".lower()  # example key
+
+# Take input from user
+text = input("Enter the message to encrypt: ").lower()
+encrypted_text = ""
+
+# Encrypt the message
+for char in text:
+    if char in plaintext_alphabet:
+        index = plaintext_alphabet.index(char)
+        encrypted_text += ciphertext_alphabet[index]
+    else:
+        encrypted_text += char  # Keep non-letter characters as-is
+
+print("Encrypted message:", encrypted_text)
