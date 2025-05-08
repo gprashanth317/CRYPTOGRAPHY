@@ -1,0 +1,32 @@
+import numpy as np
+
+# Prepare the 2x2 Hill cipher key matrix
+key_matrix = np.array([[9, 4],
+                       [5, 7]])
+
+mod = 26
+
+# Step 1: Prepare the plaintext
+plaintext = "meet me at the usual place at ten rather than eight oclock"
+plaintext = ''.join(filter(str.isalpha, plaintext.lower()))
+
+# Step 2: Pad if needed (even length)
+if len(plaintext) % 2 != 0:
+    plaintext += 'x'
+
+# Step 3: Convert to numeric values (a=0, ..., z=25)
+plaintext_numbers = [ord(c) - ord('a') for c in plaintext]
+
+# Step 4: Encrypt in pairs
+ciphertext_numbers = []
+ciphertext = ""
+print("Encryption steps:")
+for i in range(0, len(plaintext_numbers), 2):
+    pair = np.array(plaintext_numbers[i:i+2])
+    result = np.dot(key_matrix, pair) % mod
+    ciphertext_numbers.extend(result)
+    letters = ''.join([chr(n + ord('a')) for n in result])
+    ciphertext += letters
+    print(f"Pair: {plaintext[i]}{plaintext[i+1]} -> {pair.tolist()} * key -> {result.tolist()} -> {letters}")
+
+print("\nCiphertext:", ciphertext)
