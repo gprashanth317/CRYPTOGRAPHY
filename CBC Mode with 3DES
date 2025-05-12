@@ -1,0 +1,33 @@
+def xor(a, b):
+    return ''.join(['1' if i != j else '0' for i, j in zip(a, b)])
+
+def cbc_encrypt(blocks, key, iv):
+    cipher_blocks = []
+    previous = iv
+    for block in blocks:
+        block = xor(block, previous)
+        cipher = xor(block, key)  # Fake encryption
+        cipher_blocks.append(cipher)
+        previous = cipher
+    return cipher_blocks
+
+def cbc_decrypt(cipher_blocks, key, iv):
+    plain_blocks = []
+    previous = iv
+    for block in cipher_blocks:
+        decrypted = xor(block, key)
+        plain = xor(decrypted, previous)
+        plain_blocks.append(plain)
+        previous = block
+    return plain_blocks
+
+# Example
+key = "10101010"
+iv = "00000000"
+plaintext_blocks = ["11001100", "11110000"]
+
+encrypted = cbc_encrypt(plaintext_blocks, key, iv)
+print("Encrypted:", encrypted)
+
+decrypted = cbc_decrypt(encrypted, key, iv)
+print("Decrypted:", decrypted)
