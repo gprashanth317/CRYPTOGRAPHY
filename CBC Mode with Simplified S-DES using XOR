@@ -1,0 +1,36 @@
+def xor(a, b):
+    """XOR two binary strings."""
+    return ''.join('1' if i != j else '0' for i, j in zip(a, b))
+
+def cbc_encrypt(blocks, key, iv):
+    cipher_blocks = []
+    prev = iv
+    for block in blocks:
+        mixed = xor(block, prev)
+        cipher = xor(mixed, key)
+        cipher_blocks.append(cipher)
+        prev = cipher
+    return cipher_blocks
+
+def cbc_decrypt(cipher_blocks, key, iv):
+    plain_blocks = []
+    prev = iv
+    for block in cipher_blocks:
+        decrypted = xor(block, key)
+        plain = xor(decrypted, prev)
+        plain_blocks.append(plain)
+        prev = block
+    return plain_blocks
+
+# Test values from your question
+key = "01111111"
+iv = "10101010"
+plaintext_blocks = ["00000001", "00100011"]
+
+# Encrypt
+encrypted_blocks = cbc_encrypt(plaintext_blocks, key, iv)
+print("Encrypted Blocks:", encrypted_blocks)
+
+# Decrypt
+decrypted_blocks = cbc_decrypt(encrypted_blocks, key, iv)
+print("Decrypted Blocks:", decrypted_blocks)
