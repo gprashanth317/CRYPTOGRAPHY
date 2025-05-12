@@ -1,0 +1,49 @@
+def xor(a, b):
+    """XOR two binary strings of equal length."""
+    return ''.join(['1' if i != j else '0' for i, j in zip(a, b)])
+
+def pad(block, size=8):
+    """Pads a binary string to block size using '1' + '0's (bit padding)."""
+    pad_len = size - len(block)
+    return block + '1' + '0' * (pad_len - 1) if pad_len > 0 else block
+
+def ecb_encrypt(blocks, key):
+    return [xor(block, key) for block in blocks]
+
+def cbc_encrypt(blocks, key, iv):
+    cipher_blocks = []
+    previous = iv
+    for block in blocks:
+        mixed = xor(block, previous)
+        cipher = xor(mixed, key)
+        cipher_blocks.append(cipher)
+        previous = cipher
+    return cipher_blocks
+
+def cfb_encrypt(blocks, key, iv):
+    cipher_blocks = []
+    prev = iv
+    for block in blocks:
+        stream = xor(prev, key)
+        cipher = xor(block, stream)
+        cipher_blocks.append(cipher)
+        prev = cipher
+    return cipher_blocks
+
+# --------- Example usage ---------
+
+# Example 8-bit blocks
+blocks = ["11001100", "11110000"]
+key = "10101010"
+iv = "00001111"
+
+# Ensure each block is 8 bits (or pad if needed)
+padded_blocks = [pad(block, 8) for block in blocks]
+
+ecb_result = ecb_encrypt(padded_blocks, key)
+cbc_result = cbc_encrypt(padded_blocks, key, iv)
+cfb_result = cfb_encrypt(padded_blocks, key, iv)
+
+print("ECB:", ecb_result)
+print("CBC:", cbc_result)
+print("CFB:", cfb_result)
