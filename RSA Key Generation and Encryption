@@ -1,0 +1,37 @@
+def gcd(a, b):
+    while b:
+        a, b = b, a % b
+    return a
+
+def egcd(a, b):
+    if a == 0:
+        return b, 0, 1
+    g, y, x = egcd(b % a, a)
+    return g, x - (b // a) * y, y
+
+def modinv(e, phi):
+    g, x, y = egcd(e, phi)
+    return x % phi if g == 1 else None
+
+e = 31
+n = 3599
+
+# Trial division
+for i in range(2, n):
+    if n % i == 0:
+        p, q = i, n // i
+        break
+
+phi = (p - 1) * (q - 1)
+d = modinv(e, phi)
+
+print("p =", p, "q =", q)
+print("phi =", phi)
+print("Private key d =", d)
+
+# Test
+m = 42
+c = pow(m, e, n)
+print("Encrypted:", c)
+m2 = pow(c, d, n)
+print("Decrypted:", m2)
