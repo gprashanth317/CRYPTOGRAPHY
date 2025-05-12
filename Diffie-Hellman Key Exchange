@@ -1,0 +1,18 @@
+a = 5  # base
+q = 23  # prime
+
+xA = 6  # Alice's secret
+xB = 15  # Bob's secret
+
+# Public values
+yA = pow(a, xA, q)
+yB = pow(a, xB, q)
+
+# Shared key
+kA = pow(yB, xA, q)
+kB = pow(yA, xB, q)
+
+print("Alice's key:", kA)
+print("Bob's key:  ", kB)
+
+# If sent a^x (not mod q), no mod reduction ⇒ insecure and too large
