@@ -1,0 +1,25 @@
+def des_round(block, key):
+    # Fake "round" function for simulation (XOR for simplicity)
+    return ''.join(['1' if b != k else '0' for b, k in zip(block, key)])
+
+def encrypt_des_simulated(plaintext, keys):
+    block = plaintext
+    for key in keys:
+        block = des_round(block, key)
+    return block
+
+def decrypt_des_simulated(ciphertext, keys):
+    block = ciphertext
+    for key in reversed(keys):  # Reversed order
+        block = des_round(block, key)
+    return block
+
+# Example usage
+keys = ["10101010", "11110000", "00001111", "01010101"]  # 4-round keys for example
+plaintext = "11001100"
+
+cipher = encrypt_des_simulated(plaintext, keys)
+print("Encrypted:", cipher)
+
+decrypted = decrypt_des_simulated(cipher, keys)
+print("Decrypted:", decrypted)
